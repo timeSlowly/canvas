@@ -1,2 +1,3 @@
 *{margin: 0;padding: 0;}
+body{display: block;height: 100vh;position: relative;}
 #canvas{display: block;background: #FFF;}

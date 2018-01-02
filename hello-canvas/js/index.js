@@ -1,33 +1,63 @@
 autoSetCanvasSize(canvas)
-listenMouseMove()
 var context = canvas.getContext('2d'),
 	drowStatus = false,
 	presentPoint = {
 		'x': undefined,
 		"y": undefined
-	}
+	},
+	includeTouchFunction = 'ontouchstart' in document.documentElement
+	
+listenUserMove(includeTouchFunction)
 
 //监控鼠标移动且绘制轨迹
-function listenMouseMove() {
-	canvas.onmousedown = function(e) {
+function listenUserMove(touchStatus) {
+	if(touchStatus) {//支持touch
+		canvas.ontouchstart = function(e){
+			console.log(e)
+			var touchParam = e.touches[0]
+			userStart(touchParam)
+		}
+		canvas.ontouchmove = function(e) {
+			e.preventDefault && e.preventDefault();
+			//用户移动时阻止手机屏幕晃动
+			document.body.style.overflow='hidden';
+			document.body.style.height='100%';
+			var touchParam = e.touches[0]
+			userMove(touchParam)
+		}
+		canvas.ontouchend = function() {
+			userStop()
+		}
+	} else {//不支持touch
+		canvas.onmousedown = function(e) {
+			userStart(e)
+		}
+		canvas.onmousemove = function(e) {
+			userMove(e)
+		}
+		canvas.onmouseup = function() {
+			userStop()
+		}
+	}
+	function userStart(e) {
 		drowStatus = true
 		presentPoint = {
 			"x": e.clientX,
 			"y": e.clientY
 		}
 	}
-	canvas.onmousemove = function(e) {
+	function userMove(e) {
 		var newPoint = {
 			'x': e.clientX,
 			'y': e.clientY
 		}
 		if(drowStatus) {
 			drowline(presentPoint.x, presentPoint.y, newPoint.x, newPoint.y, 5)
-			drow(newPoint.x, newPoint.y, 2.5)
+			drow(newPoint.x, newPoint.y, 2.5) //在拐角处画个圆，弥补粗线条拐角处断裂
 			presentPoint = newPoint
 		}
 	}
-	canvas.onmouseup = function() {
+	function userStop() {
 		drowStatus = false
 	}
 }
