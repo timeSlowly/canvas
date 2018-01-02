@@ -1,3 +1,31 @@
 *{margin: 0;padding: 0;}
 body{display: block;height: 100vh;position: relative;}
+.svgIcon {width: 1em; height: 1em;vertical-align: -0.15em;fill: currentColor;overflow: hidden;display:block;}
 #canvas{display: block;background: #FFF;}
+
+
+.miniTool{
+	position: absolute;
+	top:15px;
+	left: 15px;
+}
+
+.miniTool>div{
+	width: 35px;
+	height: 35px;
+	cursor: default;
+	display: inline-block;
+	margin: 0 15px;
+	padding: 5px;
+	box-sizing: border-box;
+	transition: all 0.3s;
+}
+
+.miniTool>.activity{
+	padding: 0;
+}
+
+.miniTool>div>svg{
+	width: 100%;
+	height: 100%;
+}
