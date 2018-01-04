@@ -9,7 +9,7 @@ var context = canvas.getContext('2d'), //声明上下文并赋值
 	lineColor = '#000000',
 	lineWidth = '5',
 	oldColor = '',
-	oldwidth = '',
+	abc = '5',
 	eraserWidth = lineWidth * 2,
 	touchStutas = 'ontouchstart' in document.documentElement, //touch方法状态
 	eraserAble = false, //橡皮开关，默认值false
@@ -48,6 +48,9 @@ function listenUserActivity(touchAble) {
 		}
 	} else { //不支持touch
 		canvas.onmousedown = function(e) {
+			if(eraserAble) {
+				wipe()
+			}
 			userStart(e)
 		}
 		canvas.onmousemove = function(e) {
@@ -106,9 +109,9 @@ function drowline(x1, y1, x2, y2, _lineWidth) {
 function wipe() {
 	if(lineColor != 'white'){//不然双击橡皮擦会有bug
 		oldColor = lineColor
-		oldWidth = lineWidth
+		abc = lineWidth
 	}
-	console.log('出发橡皮擦时' + oldColor, oldWidth)
+	console.log('出发橡皮擦时' + oldColor, abc)
 	lineColor = 'white'
 	lineWidth = eraserWidth
 }
@@ -130,6 +133,7 @@ function autoSetCanvasSize(canvas) {
 function bindClick() {
 	//监听eraser是否激活
 	eraser.onclick = function() {
+		console.log(eraserAble)
 		eraserAble = true
 		eraser.classList.add('activity')
 		pencial.classList.remove('activity')
@@ -138,7 +142,7 @@ function bindClick() {
 	pencial.onclick = function() {
 		eraserAble = false
 		lineColor = oldColor
-		lineWidth = oldWidth
+		lineWidth = abc
 		pencial.classList.add('activity')
 		eraser.classList.remove('activity')
 	}
